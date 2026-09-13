@@ -1,0 +1,73 @@
+# ==========================================
+# 1. PERMISSÕES GERAIS PARA SEO (Google, Bing)
+# ==========================================
+User-agent: *
+Allow: /
+Allow: /blog/
+Allow: /servicos/
+Allow: /sobre/
+
+# ==========================================
+# 2. BLOQUEIO DE ÁREAS SENSÍVEIS (Segurança e Duplicate Content)
+# ==========================================
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login/
+Disallow: /dashboard/
+Disallow: /recuperar-senha/
+# Evita que o Google indexe links de campanhas, o que prejudica o SEO
+Disallow: /*?utm_*
+Disallow: /*?fbclid=*
+Disallow: /*?ref=*
+
+# ==========================================
+# 3. BLOQUEIO DE RASPAGEM PARA TREINAMENTO DE IA (LLMs)
+# ==========================================
+# OpenAI (ChatGPT / GPT-4)
+User-agent: GPTBot
+Disallow: /
+User-agent: ChatGPT-User
+Disallow: /
+User-agent: OAI-SearchBot
+Disallow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Disallow: /
+User-agent: Claude-Web
+Disallow: /
+
+# Google AI (Bard / Gemini Training - Não afeta o Google Search normal)
+User-agent: Google-Extended
+Disallow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Disallow: /
+
+# Common Crawl (O maior banco de dados usado para treinar IAs)
+User-agent: CCBot
+Disallow: /
+
+# Meta / Facebook AI
+User-agent: FacebookBot
+Disallow: /
+
+# Outros Scrapers conhecidos
+User-agent: anthropic-ai
+Disallow: /
+User-agent: Omgilibot
+Disallow: /
+User-agent: Omgili
+Disallow: /
+User-agent: Bytespider
+Disallow: /
+User-agent: Diffbot
+Disallow: /
+User-agent: Cohere-ai
+Disallow: /
+
+# ==========================================
+# 4. SITEMAP (Obrigatório para bom SEO)
+# ==========================================
+Sitemap: https://www.seusite.com.br/sitemap.xml

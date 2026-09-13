@@ -1,0 +1,899 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "DCOMM API",
+    "version": "1.0.0",
+    "description": "Especificação OpenAPI 3.0 para a API DCOMM."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor local"
+    }
+  ],
+  "tags": [
+    { "name": "system", "description": "Healthcheck e endpoints básicos" },
+    { "name": "auth", "description": "Autenticação e sessão" },
+    { "name": "site", "description": "Configurações, serviços, depoimentos e contato" },
+    { "name": "blog", "description": "Autores, categorias e posts" },
+    { "name": "analytics", "description": "Eventos e relatórios" }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["system"],
+        "summary": "Healthcheck",
+        "responses": {
+          "200": {
+            "description": "Servidor online",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Autenticar administrador",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "E-mail e senha são obrigatórios",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Obter usuário autenticado",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Dados do token JWT",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CurrentUserResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Token ausente, inválido ou expirado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/site/configuracoes": {
+      "get": {
+        "tags": ["site"],
+        "summary": "Buscar última configuração da empresa",
+        "responses": {
+          "200": {
+            "description": "Configuração encontrada ou objeto vazio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Configuracao" },
+                    {
+                      "type": "object",
+                      "additionalProperties": true,
+                      "description": "Retornado quando não há registro."
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar configurações",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["site"],
+        "summary": "Criar configuração da empresa",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ConfiguracaoInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Configuração criada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Configuracao" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao criar configurações",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/site/servicos": {
+      "get": {
+        "tags": ["site"],
+        "summary": "Listar serviços ativos",
+        "responses": {
+          "200": {
+            "description": "Lista de serviços",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Servico" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar serviços",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["site"],
+        "summary": "Criar serviço",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ServicoInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Serviço criado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Servico" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao criar serviço",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/site/depoimentos": {
+      "get": {
+        "tags": ["site"],
+        "summary": "Listar depoimentos aprovados",
+        "responses": {
+          "200": {
+            "description": "Lista de depoimentos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Depoimento" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar depoimentos",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["site"],
+        "summary": "Enviar depoimento",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DepoimentoInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Depoimento criado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Depoimento" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao enviar depoimento",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/site/contato": {
+      "post": {
+        "tags": ["site"],
+        "summary": "Enviar mensagem de contato",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ContatoInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Mensagem criada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ContatoMensagem" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao enviar mensagem de contato",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["site"],
+        "summary": "Listar mensagens de contato",
+        "responses": {
+          "200": {
+            "description": "Lista de mensagens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ContatoMensagem" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao listar contatos",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blog/autores": {
+      "get": {
+        "tags": ["blog"],
+        "summary": "Listar autores ativos",
+        "responses": {
+          "200": {
+            "description": "Lista de autores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Autor" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar autores",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["blog"],
+        "summary": "Criar autor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AutorInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Autor criado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Autor" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao criar autor",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blog/categorias": {
+      "get": {
+        "tags": ["blog"],
+        "summary": "Listar categorias",
+        "responses": {
+          "200": {
+            "description": "Lista de categorias",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Categoria" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar categorias",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["blog"],
+        "summary": "Criar categoria",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CategoriaInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoria criada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Categoria" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao criar categoria",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blog/posts": {
+      "get": {
+        "tags": ["blog"],
+        "summary": "Listar posts publicados",
+        "responses": {
+          "200": {
+            "description": "Lista de posts publicados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BlogPostPublic" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao buscar posts",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["blog"],
+        "summary": "Criar post com tags",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BlogPostCreateInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BlogPostCreateResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao criar postagem",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/track": {
+      "post": {
+        "tags": ["analytics"],
+        "summary": "Registrar evento de analytics",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AnalyticsTrackInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Evento registrado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AnalyticsTrackResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao registrar evento de analytics",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/reports": {
+      "get": {
+        "tags": ["analytics"],
+        "summary": "Gerar relatório por tipo de ação",
+        "responses": {
+          "200": {
+            "description": "Resumo agregado por tipo de ação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/AnalyticsReportItem" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao gerar relatório",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" }
+        },
+        "required": ["error"],
+        "additionalProperties": true
+      },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "Servidor DCOMM Online" },
+          "version": { "type": "string", "example": "1.0.0" }
+        },
+        "required": ["status", "version"],
+        "additionalProperties": true
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "format": "password" }
+        },
+        "required": ["email", "password"],
+        "additionalProperties": false
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string" },
+          "token": { "type": "string" },
+          "user": { "$ref": "#/components/schemas/PublicUser" }
+        },
+        "required": ["message", "token", "user"],
+        "additionalProperties": true
+      },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "user": { "$ref": "#/components/schemas/JwtUserPayload" }
+        },
+        "required": ["user"],
+        "additionalProperties": true
+      },
+      "PublicUser": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "nome": { "type": "string" },
+          "email": { "type": "string", "format": "email" }
+        },
+        "required": ["id", "nome", "email"],
+        "additionalProperties": true
+      },
+      "JwtUserPayload": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "nome": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "iat": { "type": "integer" },
+          "exp": { "type": "integer" }
+        },
+        "required": ["id", "nome", "email"],
+        "additionalProperties": true
+      },
+      "ConfiguracaoInput": {
+        "type": "object",
+        "properties": {
+          "nome_empresa": { "type": "string" },
+          "cnpj": { "type": "string" },
+          "email_contato": { "type": "string", "format": "email" },
+          "telefone": { "type": "string" },
+          "endereco": { "type": "string" },
+          "sobre_nos": { "type": "string" },
+          "links_redes_sociais": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Estrutura JSON livre."
+          }
+        },
+        "additionalProperties": false
+      },
+      "Configuracao": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ConfiguracaoInput" },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" }
+            },
+            "required": ["id"],
+            "additionalProperties": true
+          }
+        ]
+      },
+      "ServicoInput": {
+        "type": "object",
+        "properties": {
+          "titulo": { "type": "string" },
+          "descricao": { "type": "string" },
+          "icone_url": { "type": "string", "format": "uri" },
+          "preco_base": { "type": "number" },
+          "ativo": { "type": "boolean", "default": true }
+        },
+        "required": ["titulo", "descricao", "preco_base"],
+        "additionalProperties": false
+      },
+      "Servico": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ServicoInput" },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" }
+            },
+            "required": ["id"],
+            "additionalProperties": true
+          }
+        ]
+      },
+      "DepoimentoInput": {
+        "type": "object",
+        "properties": {
+          "nome_cliente": { "type": "string" },
+          "cargo_empresa": { "type": "string" },
+          "texto": { "type": "string" }
+        },
+        "required": ["nome_cliente", "texto"],
+        "additionalProperties": false
+      },
+      "Depoimento": {
+        "allOf": [
+          { "$ref": "#/components/schemas/DepoimentoInput" },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "aprovado": { "type": "boolean" },
+              "data_criacao": { "type": "string", "format": "date-time" }
+            },
+            "required": ["id"],
+            "additionalProperties": true
+          }
+        ]
+      },
+      "ContatoInput": {
+        "type": "object",
+        "properties": {
+          "nome_remetente": { "type": "string" },
+          "email_remetente": { "type": "string", "format": "email" },
+          "assunto": { "type": "string" },
+          "mensagem": { "type": "string" }
+        },
+        "required": ["nome_remetente", "email_remetente", "assunto", "mensagem"],
+        "additionalProperties": false
+      },
+      "ContatoMensagem": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ContatoInput" },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "data_envio": { "type": "string", "format": "date-time" }
+            },
+            "required": ["id"],
+            "additionalProperties": true
+          }
+        ]
+      },
+      "AutorInput": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "biografia": { "type": "string" },
+          "foto_url": { "type": "string", "format": "uri" }
+        },
+        "required": ["nome", "email"],
+        "additionalProperties": false
+      },
+      "Autor": {
+        "allOf": [
+          { "$ref": "#/components/schemas/AutorInput" },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "ativo": { "type": "boolean" }
+            },
+            "required": ["id"],
+            "additionalProperties": true
+          }
+        ]
+      },
+      "CategoriaInput": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "slug": { "type": "string" },
+          "descricao": { "type": "string" }
+        },
+        "required": ["nome", "slug"],
+        "additionalProperties": false
+      },
+      "Categoria": {
+        "allOf": [
+          { "$ref": "#/components/schemas/CategoriaInput" },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" }
+            },
+            "required": ["id"],
+            "additionalProperties": true
+          }
+        ]
+      },
+      "BlogPostCreateInput": {
+        "type": "object",
+        "properties": {
+          "autor_id": { "type": "integer" },
+          "categoria_id": { "type": "integer" },
+          "titulo": { "type": "string" },
+          "slug": { "type": "string" },
+          "resumo": { "type": "string" },
+          "conteudo": { "type": "string" },
+          "imagem_capa": { "type": "string", "format": "uri" },
+          "status": {
+            "type": "string",
+            "enum": ["rascunho", "publicado", "arquivado"]
+          },
+          "data_publicacao": { "type": "string", "format": "date-time" },
+          "tags_ids": {
+            "type": "array",
+            "items": { "type": "integer" }
+          }
+        },
+        "required": ["titulo", "slug", "conteudo"],
+        "additionalProperties": false
+      },
+      "BlogPostPublic": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "autor_id": { "type": "integer" },
+          "categoria_id": { "type": "integer" },
+          "titulo": { "type": "string" },
+          "slug": { "type": "string" },
+          "resumo": { "type": "string" },
+          "conteudo": { "type": "string" },
+          "imagem_capa": { "type": "string", "format": "uri" },
+          "status": { "type": "string" },
+          "data_publicacao": { "type": "string", "format": "date-time" },
+          "autor_nome": { "type": "string" },
+          "categoria_nome": { "type": "string" }
+        },
+        "required": ["id", "titulo", "slug", "conteudo"],
+        "additionalProperties": true
+      },
+      "BlogPostCreateResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string" },
+          "post_id": { "type": "integer" }
+        },
+        "required": ["message", "post_id"],
+        "additionalProperties": true
+      },
+      "AnalyticsTrackInput": {
+        "type": "object",
+        "properties": {
+          "sessao_id": { "type": "string" },
+          "usuario_id": { "type": "integer" },
+          "ip_anonimizado": { "type": "string" },
+          "tipo_acao": { "type": "string" },
+          "url_atual": { "type": "string", "format": "uri" },
+          "url_referencia": { "type": "string", "format": "uri" },
+          "utm_source": { "type": "string" },
+          "utm_medium": { "type": "string" },
+          "utm_campaign": { "type": "string" },
+          "dispositivo": { "type": "string" },
+          "navegador": { "type": "string" },
+          "detalhes": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "JSON livre com metadados do evento."
+          }
+        },
+        "required": ["tipo_acao", "url_atual"],
+        "additionalProperties": false
+      },
+      "AnalyticsTrackResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "tipo_acao": { "type": "string" },
+          "data_acao": { "type": "string", "format": "date-time" }
+        },
+        "required": ["id", "tipo_acao", "data_acao"],
+        "additionalProperties": true
+      },
+      "AnalyticsReportItem": {
+        "type": "object",
+        "properties": {
+          "tipo_acao": { "type": "string" },
+          "total": { "type": "integer" }
+        },
+        "required": ["tipo_acao", "total"],
+        "additionalProperties": true
+      }
+    }
+  }
+}

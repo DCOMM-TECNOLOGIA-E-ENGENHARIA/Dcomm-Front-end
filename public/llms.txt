@@ -1,0 +1,38 @@
+# DCOMM Tecnologia e Engenharia
+
+> Infraestrutura de conectividade crítica, IoT industrial, redes celulares privadas LTE/5G, rádio comunicação de missão crítica e sistemas de segurança integrados de alta performance.
+
+## Informações Institucionais
+- **URL Principal**: https://dcomm.com.br
+- **Localização**: Barueri — São Paulo, Brasil
+- **Contato Comercial**: dcoom.telecom@outlook.com
+- **WhatsApp**: +55 (11) 95552-4449
+- **Propósito do Site**: Portfólio de engenharia de alta performance, prestação de serviços de telecomunicações homologados pela ANATEL e publicação de artigos técnicos educativos.
+
+## Seções do Site Comercial (Âncoras da Home)
+- [/#inicio](https://dcomm.com.br/#inicio): Apresentação institucional, estatísticas operacionais (+25 anos de mercado) e diagnóstico técnico inicial.
+- [/#iot](https://dcomm.com.br/#iot): Hub de IoT e Conectividade. Detalhes sobre LoRaWAN, gateways Khomp e telemetria industrial em tempo real.
+- [/#iot](https://dcomm.com.br/#iot): Redes Privadas LTE/5G. Arquiteturas de rede celular dedicadas, isolamento de tráfego, QoS e edge computing.
+- [/#seguranca](https://dcomm.com.br/#seguranca): Rádio Comunicação Crítica. Engenharia estruturada em protocolos DMR, TETRA e P25.
+- [/#seguranca](https://dcomm.com.br/#seguranca): Vídeo Monitoramento Inteligente e Controle de Acesso. Câmeras IP analíticas, Bodycams preditivas e reconhecimento facial.
+- [/#servicos](https://dcomm.com.br/#servicos): Serviços de Engenharia. Projetos As-Built, construção de infraestrutura civil, subestações, instalações elétricas industriais, SPDA e aterramento de missão crítica.
+- [/#parceiros](https://dcomm.com.br/#parceiros): Ecossistema de integradores globais oficiais (Motorola, Hytera, Tait, Caltta).
+- [/#empresa](https://dcomm.com.br/#empresa): Histórico corporativo da DCOMM, pilares técnicos e certificações regulatórias.
+- [/#contato](https://dcomm.com.br/#contato): Canal direto de engenharia para envio de RFPs, escopos e solicitações de orçamento.
+
+## Consultoria Técnico-Regulatória (ANATEL)
+- [/#projetos](https://dcomm.com.br/#projetos): Seção dedicada ao processo de elaboração de projetos técnicos, auto cadastramento e emissão de Relatórios de Conformidade (Resolução 303/2002 e Resolução 700 da ANATEL) operando sob a modalidade SLP (Serviço Limitado Privado) para regularização de radiofrequências.
+
+## Canal de Conteúdo Educativo e SEO (Blog Cronológico Reverso)
+- [/blog](https://dcomm.com.br/blog): DCOMM Blog. Índice centralizado com artigos técnicos instrucionais e informativos ordenados de forma cronológica reversa (artigos mais recentes no topo) focados em educar o mercado de tecnologia crítica.
+
+### Artigos Ativos no Índice do Blog:
+- [/blog/como-a-rede-lte-privada-revoluciona-a-mineracao-4-0](https://dcomm.com.br/blog/como-a-rede-lte-privada-revoluciona-a-mineracao-4-0): Análise técnica aprofundada demonstrando o impacto de infraestruturas 4G/5G privadas na redução de latência em operações remotas de mineração e telemetria automotiva autônoma.
+- [/blog/dmr-vs-tetra-vs-p25-qual-a-melhor-tecnologia](https://dcomm.com.br/blog/dmr-vs-tetra-vs-p25-qual-a-melhor-tecnologia): Estudo arquitetural comparando os protocolos de rádio digital para suporte de missão crítica em indústrias de manufatura e utilities de grande porte.
+- [/blog/a-importancia-da-homologacao-anatel-para-drones](https://dcomm.com.br/blog/a-importancia-da-homologacao-anatel-para-drones): Passo a passo instrucional detalhando trâmites de conformidade legal e engenharia habilitada aplicada a drones industriais.
+- [/blog/o-futuro-do-videomonitoramento-inteligente-com-ia](https://dcomm.com.br/blog/o-futuro-do-videomonitoramento-inteligente-com-ia): Análise de sistemas de CFTV IP integrados com IA preditiva comportamental ativa.
+- [/blog/sensores-iot-na-industria-de-oleo-e-gas](https://dcomm.com.br/blog/sensores-iot-na-industria-de-oleo-e-gas): Telemetria satelital e redes em topologia LoRaWAN aplicadas ao monitoramento preditivo de vazão e temperatura em refinarias.
+- [/blog/guia-definitivo-de-infraestrutura-eletrica-telecom](https://dcomm.com.br/blog/guia-definitivo-de-infraestrutura-eletrica-telecom): Manual de dimensionamento elétrico, SPDA e infraestrutura de baterias de suporte para garantia de SLA 99,99% em sites de telecomunicações.
+
+## Palavras-chave Técnicas Indexadas (Contexto Simântico)
+Telecomunicações, Engenharia de Telecomunicações, IoT, Khomp, LTE Privado industrial, Redes Celulares 4G/5G dedicadas, Rádio Comunicação Digital DMR, Redes TETRA, Protocolo P25, Vídeo Monitoramento Analítico, Bodycams Inteligentes, Controle de Acesso Biométrico, Barueri SP, Projetos ANATEL, Fistel, Serviço Limitado Privado SLP.
